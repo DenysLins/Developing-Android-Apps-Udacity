@@ -1,2 +1,2 @@
 # Developing-Android-Apps-Udacity
-Developing Android Apps - Udacity - My Solutions
+This repository contains my solutions from Udacity's Developing Android Apps course.
