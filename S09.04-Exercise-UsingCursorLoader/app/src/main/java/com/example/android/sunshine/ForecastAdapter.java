@@ -16,11 +16,14 @@
 package com.example.android.sunshine;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.android.sunshine.data.WeatherContract;
 
 /**
  * {@link ForecastAdapter} exposes a list of weather forecasts
@@ -30,7 +33,8 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
 
     //  TODO (14) Remove the mWeatherData declaration and the setWeatherData method
     private String[] mWeatherData;
-    //  TODO (1) Declare a private final Context field called mContext
+    //  Completed (1) Declare a private final Context field called mContext
+    private final Context mContext;
 
     /*
      * Below, we've defined an interface to handle clicks on items within this Adapter. In the
@@ -47,8 +51,9 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
         void onClick(String weatherForDay);
     }
 
-//  TODO (2) Declare a private Cursor field called mCursor
-//  TODO (3) Add a Context field to the constructor and store that context in mContext
+    //  Completed (2) Declare a private Cursor field called mCursor
+    private Cursor mCursor;
+//  Completed (3) Add a Context field to the constructor and store that context in mContext
 
     /**
      * Creates a ForecastAdapter.
@@ -56,8 +61,9 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
      * @param clickHandler The on-click handler for this adapter. This single handler is called
      *                     when an item is clicked.
      */
-    public ForecastAdapter(ForecastAdapterOnClickHandler clickHandler) {
+    public ForecastAdapter(ForecastAdapterOnClickHandler clickHandler, Context context) {
         mClickHandler = clickHandler;
+        mContext = context;
     }
 
     /**
@@ -93,12 +99,21 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
      */
     @Override
     public void onBindViewHolder(ForecastAdapterViewHolder forecastAdapterViewHolder, int position) {
-//      TODO (5) Delete the current body of onBindViewHolder
-//      TODO (6) Move the cursor to the appropriate position
-//      TODO (7) Generate a weather summary with the date, description, high and low
-        String weatherForThisDay = mWeatherData[position];
-//      TODO (8) Display the summary that you created above
-        forecastAdapterViewHolder.weatherSummary.setText(weatherForThisDay);
+//      Complted (5) Delete the current body of onBindViewHolder
+//      Completed (6) Move the cursor to the appropriate position
+        mCursor.moveToPosition(position);
+
+//      Completed (7) Generate a weather summary with the date, description, high and low
+        StringBuilder sumary = new StringBuilder();
+        sumary.append(mCursor.getString(mCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE)))
+                .append(", ")
+                .append(mCursor.getString(mCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP)))
+                .append(", ")
+                .append(mCursor.getString(mCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP)))
+                .toString();
+
+//      Completed (8) Display the summary that you created above
+        forecastAdapterViewHolder.weatherSummary.setText(sumary);
     }
 
     /**
@@ -109,10 +124,10 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
      */
     @Override
     public int getItemCount() {
-//      TODO (9) Delete the current body of getItemCount
-//      TODO (10) If mCursor is null, return 0. Otherwise, return the count of mCursor
-        if (null == mWeatherData) return 0;
-        return mWeatherData.length;
+//      Completed (9) Delete the current body of getItemCount
+//      Completed (10) If mCursor is null, return 0. Otherwise, return the count of mCursor
+        if (null == mCursor) return 0;
+        return mCursor.getCount();
     }
 
     /**
