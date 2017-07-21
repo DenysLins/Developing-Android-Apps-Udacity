@@ -71,20 +71,20 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                  * WeatherEntry implements the interface, "BaseColumns", which does have a field
                  * named "_ID". We use that here to designate our table's primary key.
                  */
-                WeatherEntry._ID               + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        WeatherEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
-                WeatherEntry.COLUMN_DATE       + " INTEGER NOT NULL, "                 +
+                        WeatherEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
 
-                WeatherEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL,"                  +
+                        WeatherEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL," +
 
-                WeatherEntry.COLUMN_MIN_TEMP   + " REAL NOT NULL, "                    +
-                WeatherEntry.COLUMN_MAX_TEMP   + " REAL NOT NULL, "                    +
+                        WeatherEntry.COLUMN_MIN_TEMP + " REAL NOT NULL, " +
+                        WeatherEntry.COLUMN_MAX_TEMP + " REAL NOT NULL, " +
 
-                WeatherEntry.COLUMN_HUMIDITY   + " REAL NOT NULL, "                    +
-                WeatherEntry.COLUMN_PRESSURE   + " REAL NOT NULL, "                    +
+                        WeatherEntry.COLUMN_HUMIDITY + " REAL NOT NULL, " +
+                        WeatherEntry.COLUMN_PRESSURE + " REAL NOT NULL, " +
 
-                WeatherEntry.COLUMN_WIND_SPEED + " REAL NOT NULL, "                    +
-                WeatherEntry.COLUMN_DEGREES    + " REAL NOT NULL, "                    +
+                        WeatherEntry.COLUMN_WIND_SPEED + " REAL NOT NULL, " +
+                        WeatherEntry.COLUMN_DEGREES + " REAL NOT NULL, " +
 
                 /*
                  * To ensure this table can only contain one weather entry per date, we declare
@@ -92,7 +92,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                  * SQLite that if we have a weather entry for a certain date and we attempt to
                  * insert another weather entry with that date, we replace the old weather entry.
                  */
-                " UNIQUE (" + WeatherEntry.COLUMN_DATE + ") ON CONFLICT REPLACE);";
+                        " UNIQUE (" + WeatherEntry.COLUMN_DATE + ") ON CONFLICT REPLACE);";
 
         /*
          * After we've spelled out our SQLite table creation statement above, we actually execute

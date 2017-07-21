@@ -103,11 +103,11 @@ public class WeatherProvider extends ContentProvider {
      * In onCreate, we initialize our content provider on startup. This method is called for all
      * registered content providers on the application main thread at application launch time.
      * It must not perform lengthy operations, or application startup will be delayed.
-     *
+     * <p>
      * Nontrivial initialization (such as opening, upgrading, and scanning
      * databases) should be deferred until the content provider is used (via {@link #query},
      * {@link #bulkInsert(Uri, ContentValues[])}, etc).
-     *
+     * <p>
      * Deferred initialization keeps application startup fast, avoids unnecessary work if the
      * provider turns out not to be needed, and stops database errors (such as a full disk) from
      * halting application launch.
@@ -135,7 +135,6 @@ public class WeatherProvider extends ContentProvider {
      * @param uri    The content:// URI of the insertion request.
      * @param values An array of sets of column_name/value pairs to add to the database.
      *               This must not be {@code null}.
-     *
      * @return The number of values that were inserted.
      */
     @Override
@@ -181,7 +180,7 @@ public class WeatherProvider extends ContentProvider {
      * of our weather data as well as to query for the weather on a particular day.
      *
      * @param uri           The URI to query
-     * @param projection    The list of columns to put into the cursor. If null, all columns are
+     * @param projection    The list of COLUMNS to put into the cursor. If null, all COLUMNS are
      *                      included.
      * @param selection     A selection criteria to apply when filtering rows. If null, then all
      *                      rows are included.
@@ -237,10 +236,10 @@ public class WeatherProvider extends ContentProvider {
                         /* Table we are going to query */
                         WeatherContract.WeatherEntry.TABLE_NAME,
                         /*
-                         * A projection designates the columns we want returned in our Cursor.
-                         * Passing null will return all columns of data within the Cursor.
+                         * A projection designates the COLUMNS we want returned in our Cursor.
+                         * Passing null will return all COLUMNS of data within the Cursor.
                          * However, if you don't need all the data from the table, it's best
-                         * practice to limit the columns returned in the Cursor with a projection.
+                         * practice to limit the COLUMNS returned in the Cursor with a projection.
                          */
                         projection,
                         /*

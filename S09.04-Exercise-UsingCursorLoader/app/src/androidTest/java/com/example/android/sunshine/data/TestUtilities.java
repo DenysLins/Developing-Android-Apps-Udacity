@@ -243,7 +243,7 @@ class TestUtilities {
         }
     }
 
-    static String getConstantNameByStringValue(Class klass, String value)  {
+    static String getConstantNameByStringValue(Class klass, String value) {
         for (Field f : klass.getDeclaredFields()) {
             int modifiers = f.getModifiers();
             Class<?> type = f.getType();
