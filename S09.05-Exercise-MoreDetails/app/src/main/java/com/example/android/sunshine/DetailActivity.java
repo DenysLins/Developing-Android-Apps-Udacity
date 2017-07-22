@@ -50,7 +50,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
             WeatherContract.WeatherEntry.COLUMN_HUMIDITY,
             WeatherContract.WeatherEntry.COLUMN_WIND_SPEED,
-            WeatherContract.WeatherEntry.COLUMN_PRESSURE};
+            WeatherContract.WeatherEntry.COLUMN_PRESSURE,
+            WeatherContract.WeatherEntry.COLUMN_DEGREES};
 
     //  Completed (19) Create constant int values representing each column name's position above
     public static final int INDEX_WEATHER_ID = 0;
@@ -60,6 +61,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     public static final int INDEX_WEATHER_HUMIDITY = 4;
     public static final int INDEX_WEATHER_WIND_SPEED = 5;
     public static final int INDEX_WEATHER_PRESSURE = 6;
+    public static final int INDEX_WEATHER_DEGREES = 7;
 
     //  Completed (20) Create a constant int to identify our loader used in DetailActivity
     public static final int ID_LOADER = 101;
@@ -101,7 +103,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         mUri = getIntent().getData();
 //      Completed (17) Throw a NullPointerException if that URI is null
         if (mUri == null) throw new NullPointerException();
-//      TODO (35) Initialize the loader for DetailActivity
+//      Completed (35) Initialize the loader for DetailActivity
+        getSupportLoaderManager().initLoader(ID_LOADER, null, this);
     }
 
     /**
@@ -175,11 +178,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         switch (id) {
             case ID_LOADER:
                 CursorLoader cursorLoader = new CursorLoader(getApplicationContext(),
-                        WeatherContract.WeatherEntry.CONTENT_URI,
+                        mUri,
                         COLUMNS,
-                        WeatherContract.WeatherEntry.getSqlSelectForTodayOnwards(),
                         null,
-                        WeatherContract.WeatherEntry.COLUMN_DATE + " ASC");
+                        null,
+                        null);
                 return cursorLoader;
             default:
                 throw new UnsupportedOperationException("Invalid id: " + id);
@@ -191,7 +194,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         //      Completed (25) Check before doing anything that the Cursor has valid data
-        if (data != null) {
+        if (data != null && data.moveToFirst()) {
             //      Completed (26) Display a readable data string
             long date = data.getLong(DetailActivity.INDEX_WEATHER_DATE);
             String stringDate = SunshineDateUtils.getFriendlyDateString(getApplicationContext(), date, false);
@@ -208,25 +211,38 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             double low = data.getDouble(DetailActivity.INDEX_WEATHER_MIN_TEMP);
             String stringLow = SunshineWeatherUtils.formatTemperature(getApplicationContext(), low);
             tvLow.setText(stringLow);
-            //      TODO (30) Display the humidity
+            //      Completed (30) Display the humidity
             double humidity = data.getDouble(DetailActivity.INDEX_WEATHER_HUMIDITY);
-//      TODO (31) Display the wind speed and direction
-//      TODO (32) Display the pressure
-//      TODO (33) Store a forecast summary in mForecastSummary
+            String stringHumidity = getString(R.string.format_humidity, humidity);
+            tvHumidity.setText(stringHumidity);
+            //      Completed (31) Display the wind speed and direction
+            float wind = (float) data.getDouble(DetailActivity.INDEX_WEATHER_WIND_SPEED);
+            float degrees = (float) data.getDouble(DetailActivity.INDEX_WEATHER_DEGREES);
+            String stringWind = SunshineWeatherUtils.getFormattedWind(getApplicationContext(), wind, degrees);
+            tvWind.setText(stringWind);
+            //      Completed (32) Display the pressure
+            double pressure = data.getDouble(DetailActivity.INDEX_WEATHER_PRESSURE);
+            String stringPressure = getString(R.string.format_pressure, pressure);
+            tvPressure.setText(String.valueOf(stringPressure));
+            //      Completed (33) Store a forecast summary in mForecastSummary
+            mForecastSummary = stringDate + "\n" +
+                    description + "\n" +
+                    stringHigh + "\n" +
+                    stringLow + "\n" +
+                    stringHumidity + "\n" +
+                    stringWind + "\n" +
+                    stringPressure;
 
-        } else {
-            return;
         }
-
 
     }
 
+    //  Completed (34) Override onLoaderReset, but don't do anything in it yet
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 
 
-//  TODO (34) Override onLoaderReset, but don't do anything in it yet
 
 }
