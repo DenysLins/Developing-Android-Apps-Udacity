@@ -19,20 +19,31 @@ import android.content.Context;
 
 import com.example.android.background.utilities.PreferenceUtilities;
 
+import static com.example.android.background.utilities.NotificationUtils.clearNotification;
+
 public class ReminderTasks {
 
     public static final String ACTION_INCREMENT_WATER_COUNT = "increment-water-count";
-    //  TODO (2) Add a public static constant called ACTION_DISMISS_NOTIFICATION
+    //  Completed (2) Add a public static constant called ACTION_DISMISS_NOTIFICATION
+    public static final String ACTION_DISMISS_NOTIFICATION = "dismiss-notification";
 
     public static void executeTask(Context context, String action) {
-        if (ACTION_INCREMENT_WATER_COUNT.equals(action)) {
-            incrementWaterCount(context);
+        //      Completed (3) If the user ignored the reminder, clear the notification
+        switch (action) {
+            case ACTION_INCREMENT_WATER_COUNT:
+                incrementWaterCount(context);
+                break;
+            case ACTION_DISMISS_NOTIFICATION:
+                clearNotification(context);
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid action: " + action);
         }
-        //      TODO (3) If the user ignored the reminder, clear the notification
     }
 
     private static void incrementWaterCount(Context context) {
         PreferenceUtilities.incrementWaterCount(context);
-        //      TODO (4) If the water count was incremented, clear any notifications
+        //      Completed (4) If the water count was incremented, clear any notifications
+        clearNotification(context);
     }
 }
