@@ -168,6 +168,8 @@ public class MainActivity extends AppCompatActivity implements
             if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())) {
                 // Completed (4) Update the UI using the showCharging method you wrote
                 showCharging(true);
+            } else if (Intent.ACTION_POWER_DISCONNECTED.equals(intent.getAction())) {
+                showCharging(false);
             }
         }
     }
